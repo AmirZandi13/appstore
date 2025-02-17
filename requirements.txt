@@ -1,0 +1,6 @@
+Django
+djangorestframework
+drf-yasg
+django-environ
+psycopg2
+djangorestframework-simplejwt
