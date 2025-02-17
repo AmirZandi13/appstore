@@ -1,3 +1,5 @@
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -11,15 +13,28 @@ class AppCreateView(generics.CreateAPIView):
     serializer_class = AppSerializer
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(
+        operation_description="Create a new app",
+        request_body=AppSerializer,
+        responses={
+            201: openapi.Response(
+                description="App created successfully",
+                schema=AppSerializer
+            ),
+            400: openapi.Response(description="Invalid input"),
+            401: openapi.Response(description="Authentication credentials were not provided"),
+        }
+    )
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
 
-# Mock Signup View
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def signup(request):
     return Response({"message": "Mocked signup endpoint"}, status=201)
 
 
-# Mock Login View (We use JWT authentication, so this is just a placeholder)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
